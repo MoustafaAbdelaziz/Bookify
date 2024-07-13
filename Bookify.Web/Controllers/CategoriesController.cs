@@ -1,5 +1,4 @@
-﻿
-namespace Bookify.Web.Controllers
+﻿namespace Bookify.Web.Controllers
 {
 	public class CategoriesController : Controller
 	{
@@ -18,7 +17,7 @@ namespace Bookify.Web.Controllers
 			var categories = _context.Categories.AsNoTracking().ToList();
 
 			var viewModel = _mapper.Map<IEnumerable<CategoryViewModel>>(categories);
-			
+
 			return View(viewModel);
 		}
 		[AjaxOnly]
