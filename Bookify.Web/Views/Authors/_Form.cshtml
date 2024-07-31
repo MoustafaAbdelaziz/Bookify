@@ -1,16 +1,16 @@
 ﻿@model AuthorFormViewModel
 
 
-<form asp-action="@(Model?.id > 0 ? "Edit" : "Create")" 
+<form asp-action="@(Model?.Id > 0 ? "Edit" : "Create")" 
 	data-ajax-method="post" 
 	data-ajax="true"
 	  data-ajax-begin="OnModalBegin"
 	  data-ajax-success="OnModalSuccess"
 	data-ajax-failure="ShowErrorMessage"
 	data-ajax-complete="OnModalComplete">
-	@if (Model?.id > 0)
+	@if (Model?.Id > 0)
 	{
-		<input type="hidden" asp-for="id" />
+		<input type="hidden" asp-for="Id" />
 	}
 	<div class="mb-5">
 		<div class="form-floating mb-2">

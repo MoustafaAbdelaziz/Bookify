@@ -141,6 +141,27 @@ var KTDatatables = function () {
 }();
 
 $(document).ready(function () {
+    //tinyMCE
+    var options = { selector: ".js-tinymce", height: "422" };
+
+    if (KTThemeMode.getMode() === "dark") {
+        options["skin"] = "oxide-dark";
+        options["content_css"] = "dark";
+    }
+    tinymce.init(options);
+
+    //Select2
+    $('.js-select2').select2();
+
+    //datePicker
+    $('.js-datepicker').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        autoApply: true,
+        drops: 'auto',
+        maxDate: new Date()
+    });
+
     //SweetAlert
     var message = $("#Message").text();
     if (message !== '') {

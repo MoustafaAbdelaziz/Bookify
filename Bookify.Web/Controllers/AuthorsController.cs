@@ -60,7 +60,7 @@
 			if (!ModelState.IsValid)
 				return BadRequest();
 
-			var author = _context.Authors.Find(model.id);
+			var author = _context.Authors.Find(model.Id);
 
 			if (author is null)
 				return NotFound();
@@ -96,7 +96,7 @@
 		{
 			var author = _context.Authors.SingleOrDefault(a => a.Name == model.Name);
 
-			var isAllowed = author is null || author.Id.Equals(model.id);
+			var isAllowed = author is null || author.Id.Equals(model.Id);
 			return Json(isAllowed);
 		}
 	}
