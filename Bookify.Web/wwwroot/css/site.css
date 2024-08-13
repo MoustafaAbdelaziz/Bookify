@@ -17,13 +17,13 @@ body {
   margin-bottom: 60px;
 }
 
-/* Start Override theme*/
+/* Start Override theme */
 .form-floating > .form-select {
     padding-bottom: .225rem;
 }
-/* End Override theme*/
+/* End Override theme */
 
-/* Start Override Bootbox*/
+/* Start Override Bootbox */
 .bootbox-class-button{
     position: absolute;
     top: 0;
@@ -34,4 +34,14 @@ body {
     border: 0;
     -webkit-appearance: none;
 }
-/* End Override Bootbox*/
+/* End Override Bootbox */
+
+/* Start Custom Style */
+.dt-spinner + div {
+    display: none !important;
+}
+
+.h-70 {
+    height: 70px !important;
+}
+/* End Custom Style */

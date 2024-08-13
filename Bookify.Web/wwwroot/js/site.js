@@ -61,6 +61,9 @@ var KTDatatables = function () {
         datatable = $(table).DataTable({
             "info": false,
             'pageLength': 10,
+            'drawCallback': function () {
+                KTMenu.createInstances();
+            },
         });
     }
 
@@ -218,11 +221,11 @@ $(document).ready(function () {
     });
 
     //Handle Toggle status
-    $('.js-toggle-status').on('click', function () {
+    $('body').delegate('.js-toggle-status', 'click', function () {
         var btn = $(this);
 
         bootbox.confirm({
-            message: 'Are you sure you want to toggle this category?',
+            message: 'Are you sure you want to toggle this item status?',
             buttons: {
                 confirm: {
                     label: 'Yes',
@@ -253,11 +256,7 @@ $(document).ready(function () {
                         }
                     });
                 }
-
-
             }
         });
-
-
     });
 });

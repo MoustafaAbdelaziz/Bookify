@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
+using System.Linq.Dynamic.Core;
 
 namespace Bookify.Web.Controllers
 {
@@ -24,6 +25,35 @@ namespace Bookify.Web.Controllers
 		public IActionResult Index()
 		{
 			return View();
+		}
+		[HttpPost]
+		public IActionResult GetBooks()
+		{
+			var skip = int.Parse(Request.Form["start"]);  
+			var length = int.Parse(Request.Form["length"]);
+			var searchValue = (Request.Form["search[value]"]);
+
+			var sortColumnIndex = (Request.Form["order[0][column]"]);
+			var sortColumnName = Request.Form[$"columns[{sortColumnIndex}][name]"];
+			var sortColumnDir = Request.Form[$"order[0][dir]"];
+
+			IQueryable<Book> books = _context.Books
+				.Include(b => b.Author)
+				.Include(b => b.Categories)
+				.ThenInclude(c => c.Category);
+
+			if (!string.IsNullOrEmpty(searchValue))
+				books = books.Where(b => b.Title.Contains(searchValue) || b.Author!.Name.Contains(searchValue));
+
+			books = books.OrderBy($"{sortColumnName} {sortColumnDir}");
+
+			var data = books.Skip(skip).Take(length).ToList();
+
+			var mappedData = _mapper.Map<IEnumerable<BookViewModel>>(data);
+			var recordsTotal = books.Count();
+			var jsonData = new { recordsFiltered = recordsTotal, recordsTotal, data = mappedData };
+
+			return Ok(jsonData);
 		}
 
 		public IActionResult Details(int id)
@@ -181,6 +211,23 @@ namespace Bookify.Web.Controllers
 			_context.SaveChanges();
 
 			return RedirectToAction(nameof(Details), new { id = book.Id});
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult ToggleStatus(int id)
+		{
+			var book = _context.Books.Find(id);
+
+			if (book is null)
+				return NotFound();
+
+			book.IsDeleted = !book.IsDeleted;
+			book.LastUpdatedOn = DateTime.Now;
+
+			_context.SaveChanges();
+
+			return Ok();
 		}
 
 		public IActionResult AllowItem(BookFormViewModel model)
